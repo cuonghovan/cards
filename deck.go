@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 type deck []string
@@ -55,4 +57,14 @@ func newDeckFromFile(fileName string) deck {
 	}
 
 	return newDeckFromString(string(bs))
+}
+
+func (d deck) shuffle() {
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
+
+	for i := range d {
+		ri := r.Intn(len(d) - 1)
+		d[i], d[ri] = d[ri], d[i]
+	}
 }
